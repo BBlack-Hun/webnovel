@@ -41,7 +41,7 @@ public class NovelEpisodeContents extends AuditingFields {
     private Long id;
     @Setter
     @ManyToOne(optional = false)
-    private NovelEpisode novelEpisode; // 소설 커버
+    private NovelEpisode novelEpisode; // 소설 에피소드
 
     private String contents;
 
