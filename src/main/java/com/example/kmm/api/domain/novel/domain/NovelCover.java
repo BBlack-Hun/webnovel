@@ -1,5 +1,6 @@
 package com.example.kmm.api.domain.novel.domain;
 
+import com.example.kmm.api.domain.user.domain.User;
 import com.example.kmm.api.domain.user.dto.AuditingFields;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -54,7 +57,9 @@ public class NovelCover extends AuditingFields {
     @Setter
     private String description;
     @Setter
-    private String writer;
+    @ManyToOne(optional = false)
+    @JoinColumn(name="userId")
+    private User user; // 유저 정보 (ID)
     @Setter
     private int likeCount;
     @Setter
@@ -64,4 +69,14 @@ public class NovelCover extends AuditingFields {
     @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "novelCover", cascade = CascadeType.ALL)
     private final Set<NovelEpisode> novelEpisodes = new LinkedHashSet<>();
+
+    private  NovelCover(User user, String title, String content) {
+        this.user = user;
+        this.title = title;
+        this.description = content;
+    }
+
+    public static NovelCover of(User user, String title, String description) {
+        return new NovelCover(user, title, description);
+    }
 }
